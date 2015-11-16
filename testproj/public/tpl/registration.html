@@ -1,0 +1,56 @@
+<div class="container">
+    <h3 class="section-header">Register your account</h3>
+
+    <!--<uib-alert class="custom-alert col-md-offset-3 col-md-6" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>-->
+
+    <div class="panel panel-default col-md-offset-4 col-md-4">
+        <div class="panel-body">
+            <form novalidate name="form">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="user.email" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'email'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in your email.</span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Full name</label>
+                    <input type="fullname" class="form-control" name="fullname" id="fullname" placeholder="Full name" ng-model="user.name" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'name'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in your full name.</span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPhone1">Phone number</label>
+                    <input type="tel" class="form-control" name="tel" id="tel" placeholder="Phone number" ng-model="user.tel" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'tel'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in your phone number.</span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="user.pass">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'pass'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in your password.</span>
+                </div>
+                <div class="form-group">
+                    <label for="repeat-password">Repeat password</label>
+                    <input type="password" class="form-control" name="repeatPassword" id="repeat-password" ng-model="user.repeatPass" placeholder="Repeat password">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'repeatPass'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Repeat your password.</span>
+                </div>
+                <div class="">
+                    <button type="submit" ng-click="attemptRegistration()" class="btn btn-default btn-primary col-md-12">Register</button>
+                </div>
+                <a class="link-right" href="/login">already have an account?</a>
+            </form>
+        </div>
+    </div>
+</div>

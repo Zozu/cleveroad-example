@@ -1,0 +1,32 @@
+<div class="container">
+    <h3 class="section-header">Sign in the system</h3>
+    <div class="panel panel-default col-md-offset-4 col-md-4">
+        <div class="alert alert-danger margin-top-15" ng-show="!!danger_mes">
+            <strong>Warning!</strong> {{danger_mes}}
+        </div>
+        <div class="panel-body">
+            <form novalidate name="login">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" ng-model="user.email" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'email'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in your email.</span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="user.password" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'pass'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in your password.</span>
+                </div>
+                <div class="">
+                    <button type="submit" ng-click="attemptLogin()" class="btn btn-default btn-primary col-md-12">Login</button>
+                </div>
+                <a class="link-right" href="/registration">haven't got an account?</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="container">
+    <h3 class="section-header">{{page_title}}</h3>
+    <div class="panel panel-default col-md-offset-4 col-md-4">
+        <div class="panel-body">
+            <form novalidate name="item-form">
+                <div class="form-group">
+                    <label for="email">Title</label>
+                    <input type="text" class="form-control" name="title" id="title" placeholder="Title" ng-model="item.title" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'title'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in item title.</span>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="text" class="form-control" id="price" name="price" placeholder="Price" ng-model="item.price" required="">
+                    <div>
+                        <span class="error-message" ng-repeat="error in errors" ng-show="error.field == 'price'">{{error.message}}</span>
+                    </div>
+                    <span class="info-message" ng-hide="!!errors">Type in title price.</span>
+                </div>
+
+                <button type="submit" ng-click="submitItem()" class="btn btn-default btn-primary col-md-12">{{text_button}}</button>
+            </form>
+
+            <div class="row">
+                <div style="text-align: center;">
+                    <button class="btn btn-default" ngf-select ng-model="file" name="file" disabled>
+                        Upload item photo
+                    </button>
+                    <div style="color:red;" ng-if="item.uploadError">{{item.uploadError}}</div>
+                </div>
+                <div class="row">
+                    <img class="img-preview" ngf-src="file">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

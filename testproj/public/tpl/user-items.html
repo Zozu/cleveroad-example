@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="col-md-3 left-menu">
+        <button type="button" class="btn btn-primary" ng-click="newItem()">Create item</button>
+    </div>
+    <div class="col-md-9">
+        <table class="catalog-table">
+            <tr class="border-row-table pointer item-row-height" ng-repeat="item in items">
+                <td class="image-left"><img ng-src="{{item.image}}"></td>
+                <td class="title-column">
+                    <label>Title:
+                        <section>{{item.title}}</section>
+                    </label>
+                </td>
+                <td class="price-column">
+                    <label>Price:
+                        <section>{{item.price}}</section>
+                    </label>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary" ng-click="editItem(item.id)">Edit item</button>
+                    <button type="button" class="btn btn-danger" ng-click="deleteItem(item.id)">Delete item</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

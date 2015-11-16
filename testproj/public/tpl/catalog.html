@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row row-flex">
+        <div class="col-md-3 left-menu">
+            <div class="row">
+                <label for="item_search">Title</label>
+                <input type="text" class="form-control" name="item_search" id="item_search" placeholder="Title" ng-model="search_title" ng-change="updateSearch()">
+            </div>
+            <div class="row">
+                <label for="sort">Sort</label>
+                <select name="sort" id="sort" class="form-control" ng-options="option as option.label for option in options track by option.id" ng-model="selected" ng-change="updateSearch()">
+                    <option value="price_asc">By price(Ascending)</option>
+                    <option value="price_desc">By price(Descending)</option>
+                    <option value="date_asc">By date(Ascending)</option>
+                    <option value="date_desc">By date(Descending)</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-9 padding-row">
+            <table class="catalog-table">
+                <tr class="border-row-table pointer item-row-height" ng-repeat="item in items" ng-click="goItem(item.id)">
+                    <td class="image-left"><img ng-src="{{item.image}}"></td>
+                    <td class="title-column">
+                        <label>Title:
+                            <section>{{item.title}}</section>
+                        </label>
+                    </td>
+                    <td class="price-column">
+                        <label>Price:
+                            <section>{{item.price}}</section>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

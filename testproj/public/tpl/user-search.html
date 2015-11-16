@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row row-flex">
+        <div class="col-md-3 left-menu">
+            <div class="row">
+                <label for="user-name">Name</label>
+                <input type="text" class="form-control" name="user-name" id="user-name" placeholder="Name" ng-model="search_name" ng-change="updateSearch()">
+            </div>
+            <div class="row">or</div>
+            <div class="row">
+                <label for="user-email">E-mail</label>
+                <input type="text" class="form-control" name="user-email" id="user-email" placeholder="E-mail" ng-model="search_email" ng-change="updateSearch()">
+            </div>
+        </div>
+        <div class="col-md-9 padding-row">
+            <table class="catalog-table">
+                <tr class="border-row-table pointer" ng-repeat="user in users" ng-click="goUser(user.id)">
+                    <td class="user-column">
+                        <label>Name:
+                            <section>{{user.name}}</section>
+                        </label>
+                    </td>
+                    <td class="user-column">
+                        <label>E-mail:
+                            <section>{{user.email}}</section>
+                        </label>
+                    </td>
+                    <td class="user-column">
+                        <label>Phone:
+                            <section>{{user.tel}}</section>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

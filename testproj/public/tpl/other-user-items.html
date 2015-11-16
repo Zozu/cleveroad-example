@@ -1,0 +1,17 @@
+<div class="container">
+    <table class="catalog-table">
+        <tr class="border-row-table item-row-height" ng-repeat="item in items">
+            <td class="image-left"><img ng-src="{{item.image}}"></td>
+            <td class="title-column">
+                <label>Title:
+                    <section>{{item.title}}</section>
+                </label>
+            </td>
+            <td class="price-column">
+                <label>Price:
+                    <section>{{item.price}}</section>
+                </label>
+            </td>
+        </tr>
+    </table>
+</div>
