@@ -2,7 +2,7 @@ angular.module('test').controller('RegistrationController', function ($scope, Ap
     $scope.user = {};
 
     $scope.attemptRegistration = function () {
-        AuthenticationService.ClearCredentials();
+        AuthenticationService.Unauthorize();
         ApiService.Registrate($scope.user)
             .then(function (response) {
                 if (response.status == 200) {

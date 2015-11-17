@@ -17,10 +17,8 @@ angular.module('test').controller('UserSearchController', function ($scope, $loc
                 name: $scope.search_name,
             }
             ApiService.SearchUsers(params).then(function (response) {
-                console.log(response);
                 if (response.status == 200) {
                     $scope.users = response.data;
-                    console.log($scope.users);
                 } else if (response.status == 422) {
                     $scope.errors = response.data;
                 }

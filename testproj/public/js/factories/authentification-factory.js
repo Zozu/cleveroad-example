@@ -30,6 +30,7 @@ angular.module('test')
         function SetToken(token, time) {
             $rootScope.globals.token = token;
             $rootScope.globals.timeLogin = time;
+
             $http.defaults.headers.common['Authorization'] = token;
         }
 
@@ -46,7 +47,7 @@ angular.module('test')
                 }, function (response) {
                     callback(response);
                 });
-        }
+        };
 
         function SetCredentials(id, email, tel, name) {
 
@@ -63,7 +64,7 @@ angular.module('test')
         function ClearCredentials() {
             $rootScope.globals = {};
             $cookieStore.remove('globals');
-            $http.defaults.headers.common.Authorization = 'Basic ';
+            $http.defaults.headers.common['Authorization'] = 'Basic ';
         }
 
     });

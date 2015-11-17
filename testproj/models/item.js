@@ -1,6 +1,6 @@
-function Item(id, created_at, title, price, image, user) {
+function Item(id, time, title, price, image, user) {
     this._id = id
-    this._created_at = created_at;
+    this._time = time;
     this._title = title;
     this._price = price;
     this._image = image;
@@ -32,11 +32,11 @@ Item.prototype = {
     set id(id) {
         this._id = id;
     },
-    get created_at() {
-        return this._created_at;
+    get time() {
+        return this._time;
     },
-    set created_at(created_at) {
-        this._created_at = created_at;
+    set time(time) {
+        this._time = time;
     },
     get title() {
         return this._title;

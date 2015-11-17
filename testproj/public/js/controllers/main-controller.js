@@ -8,7 +8,6 @@ angular.module('test').controller('MainController', function ($scope, $location,
     $scope.init = function () {
         $scope.logged = $rootScope.isLogged;
         if (!$scope.logged) {
-            console.log("111");
             $scope.leftTitle = "Sign in";
             $scope.leftTextH4 = "You may sign in to the system for add own items!";
             $scope.leftTextH5 = "Click here for enter login form!";
@@ -32,7 +31,6 @@ angular.module('test').controller('MainController', function ($scope, $location,
                 $location.path("/registration");
             };
         } else {
-            console.log("222");
             $scope.leftTitle = (!!$rootScope.globals.currentUser) ? $rootScope.globals.currentUser.name : "";
             $scope.leftTextH4 = "You can edit your credentials!";
             $scope.leftTextH5 = "Click here for edit user info!";

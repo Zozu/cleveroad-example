@@ -1,7 +1,7 @@
 'use strict';
 angular
     .module('test')
-    .factory('ApiService', function ($http) {
+    .factory('ApiService', function ($http, Upload) {
         var $scope = {};
 
         $scope.SearchItems = SearchItems;
@@ -13,7 +13,8 @@ angular
         $scope.Delete = Delete;
         $scope.CreateItem = CreateItem;
         $scope.EditItem = EditItem;
-        //$scope.UploadImage = UploadImage;
+        $scope.UploadImage = UploadImage;
+        $scope.DeleteImage = DeleteImage;
         return $scope;
 
         function SearchItems(params) {
@@ -43,18 +44,20 @@ angular
             return $http.post("/api/item", item).then(handleSuccess, handleError);
         }
 
-        /*function UploadImage(id, image) {
+        function UploadImage(id, file) {
             return Upload.upload({
-                method: 'POST',
-                url:"/api/item/" + id + "/image",
-                file: image
+                url: '/api/item/' + id + '/image',
+                file: file
             }).then(handleSuccess, handleError);
-        }*/
+        }
+
+        function DeleteImage(id) {
+            return $http.delete('/api/item/' + id + '/image').then(handleSuccess, handleError);
+        }
 
         function EditItem(id, item) {
             return $http.put("/api/item/" + id, item).then(handleSuccess, handleError);
         }
-
 
         function UserSave(user) {
             return $http.put("/api/me", user).then(handleSuccess, handleError);

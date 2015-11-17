@@ -5,7 +5,7 @@
     <div class="col-md-9">
         <table class="catalog-table">
             <tr class="border-row-table pointer item-row-height" ng-repeat="item in items">
-                <td class="image-left"><img ng-src="{{item.image}}"></td>
+                <td class="image-left"><img class="catalog-img" ng-src="{{item.image || '/images/thumb'}}"></td>
                 <td class="title-column">
                     <label>Title:
                         <section>{{item.title}}</section>

@@ -19,7 +19,6 @@ body {
     left: 15%;
 }
 
-
 h2 {
     text-align: center;
 }
@@ -205,7 +204,6 @@ body {
     padding: 0;
 }
 
-
 .header h3 {
     margin-top: 0;
     margin-bottom: 0;
@@ -220,7 +218,6 @@ body {
 .container-narrow > hr {
     margin: 30px 0;
 }
-
 
 .section-header {
     padding-bottom: 9px;
@@ -237,22 +234,18 @@ a:hover {
     color: #1dd2af;
     text-decoration: none;
 }
+
 .margin-top-20 {
     margin-top: 20px;
 }
 
 .margin-top-30 {
-
     margin-top: 30px;
 }
 
 .left-menu {
     margin: 10px;
 }
-
-
-
-
 
 .item-row {
     position: relative;
@@ -262,7 +255,7 @@ a:hover {
 }
 
 .image-left {
-    min-width: 150px;
+    max-width: 150px;
 }
 
 .data-right {
@@ -299,7 +292,6 @@ a:hover {
 }
 
 .price-column {
-
     padding: 10px;
     min-width: 150px;
 }
@@ -317,11 +309,27 @@ a:hover {
 }
 
 .img-preview {
-    margin-top: 5px;
-    position: relative;
     width: 100%;
 }
 
 .margin-top-15 {
     margin-top: 15px;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+.catalog-img {
+    margin-left: 15px;
+    max-width: 150px;
+}
+
+.drag-pointer {
+    background-color: azure;
+}
+.edit-image-button {
+    position: absolute;
+    top:15px;
+    right: 15px;
 }

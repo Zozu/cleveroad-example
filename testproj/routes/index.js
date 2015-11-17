@@ -1,15 +1,12 @@
 var express = require('express');
 
-
 var User = require('../models/user');
 var Item = require('../models/item');
 var Tokenize = require('../tools/token-generator');
 var SQLConsts = require('../constants/SQLSequences');
 var db = require("../db/mysqlLib");
 var Time = require('../tools/getTime');
-var mysql = require("mysql");
-
-
+var fs = require("fs");
 var router = express.Router();
 
 /* GET home page. */
@@ -80,8 +77,6 @@ router.post('/api/register', function (req, res) {
         db.getConnection(function (err3, connection) {
             connection.query(SQLConsts.GETUSERCONSIST, [req.body.email], function (err1, rows1, fields1) {
                 if (err1 || rows1.length > 0) {
-                    console.log(err);
-                    console.log(rows1);
                     res.status(422).json(errorMessage("email", "User already exist..."));
                 } else {
                     connection.query(SQLConsts.GETMAXUSER, function (err, rows, fields) {
@@ -104,7 +99,6 @@ router.post('/api/register', function (req, res) {
             connection.release();
         });
     } else {
-        console.log(user.errors);
         res.status(422).json(user.errors);
     }
 });
@@ -157,7 +151,6 @@ router.put('/api/me', function (req, res) {
                                 res.status(422).json(errorMessage("pass", "Wrong current password"));
                         });
                     } else {
-                        console.log(3);
                         connection.query(SQLConsts.UPDATEUSER, [user.email, user.name, user.tel, token], function (err, result) {
                             if (!err && result.affectedRows == 1) {
                                 res.status(200).json({
@@ -178,7 +171,6 @@ router.put('/api/me', function (req, res) {
         });
     } else {
         res.status(422).json(user.errors);
-        console.log(user.errors);
     }
 });
 
@@ -217,7 +209,6 @@ router.get('/api/user', function (req, res) {
         var sq = "SELECT user.id, user.tel, user.name, user.email FROM user WHERE MATCH (email,name) AGAINST ('" + searchName + searchEmail + " IN BOOLEAN MODE');"
             //connection.query(SQLConsts.SEARCHUSER, [searchName + "" + searchEmail], function (err, rows, fields) {
         connection.query(sq, function (err, rows, fields) {
-            console.log(rows);
             if (!err) {
                 res.status(200).json(rows);
             }
@@ -242,7 +233,6 @@ router.get('/api/item', function (req, res) {
     var searchOrder = (!!req.query.order_by) ? req.query.order_by : ("created_at");
     var searchOrdType = (!!req.query.order_type) ? req.query.order_type.toUpperCase() : ("DESC");
     var sq = "SELECT item.id, item.created_at, item.title, item.price, item.image, item.user FROM item WHERE " + stringSearch + " ORDER BY " + searchOrder + " " + searchOrdType + " ;";
-    console.log(sq);
     db.getConnection(function (err3, connection) {
         if (!err3) {
             //connection.query(SQLConsts.SEARCHITEMS, [stringSearch, searchOrder, searchOrdType], function (err, rows, fields) {
@@ -261,18 +251,8 @@ router.get('/api/item/:id', function (req, res) {
     var reqId = req.params.id;
     db.getConnection(function (err3, connection) {
         connection.query(SQLConsts.GETITEMBYID, [reqId], function (err, rows, fields) {
-            console.log(err);
             if (!err && rows.length == 1) {
-                console.log(3);
-                var item = {
-                    title: rows[0].title,
-                    id: rows[0].id,
-                    time: rows[0].time,
-                    price: rows[0].price,
-                    image: rows[0].image,
-                    user: rows[0].user,
-
-                }
+                var item = new Item(rows[0].id, rows[0].time, rows[0].title, rows[0].price, rows[0].image, rows[0].user);
                 res.status(200).json(item);
             } else
                 res.status(404).end();
@@ -317,7 +297,6 @@ router.put('/api/item/:id', function (req, res) {
             connection.release();
         });
     } else {
-        console.log(item.errors);
         res.status(422).json(item.errors);
     }
 });
@@ -325,6 +304,9 @@ router.put('/api/item/:id', function (req, res) {
 //delete item
 router.delete('/api/item/:id', function (req, res) {
     var itemId = parseInt(req.params.id);
+    var filename = itemId + ".jpg";
+    var savePath = "/images/";
+    var full = savePath + filename;
     var token = req.headers.authorization;
     db.getConnection(function (err3, connection) {
         connection.query(SQLConsts.GETUSERBYTOKEN, [token], function (err2, rows2, fields2) {
@@ -335,9 +317,8 @@ router.delete('/api/item/:id', function (req, res) {
                         if (userId != rows[0].user) {
                             res.status(403).end();
                         } else {
+                            fs.unlink(__dirname + "/.." + full);
                             connection.query(SQLConsts.DELETEITEM, [itemId], function (err1, result) {
-                                console.log(err1);
-                                console.log(result);
                                 if (!err1 && result.affectedRows == 1) {
                                     res.status(200).end();
                                 } else {
@@ -370,8 +351,6 @@ router.post('/api/item', function (req, res) {
                         item.id = rows[0].maxid + 1;
                         if (item.isValid) {
                             connection.query(SQLConsts.CREATEITEM, [item.id, item.time, item.title, item.price, item.image, item.user], function (err1, result) {
-                                console.log(err1);
-                                console.log(result);
                                 if (!err1 && result.affectedRows == 1) {
                                     res.status(200).json(item);
                                 } else {
@@ -389,73 +368,26 @@ router.post('/api/item', function (req, res) {
     });
 });
 
-//upload item image
-/*router.post('/api/item/:id/image',.single('upl'), function (req, res) {
-    //TODO
-    var id = req.params.id;
-    //var imageFile = req.files.file;
-    console.log(req.file);
-    var image = "";
+//remove item image
+router.delete('/api/item/:id/image', function (req, res) {
+    var itemId = req.params.id;
+    var filename = itemId + ".jpg";
+    var savePath = "/images/";
+    var full = savePath + filename;
     var token = req.headers.authorization;
     db.getConnection(function (err3, connection) {
         connection.query(SQLConsts.GETUSERBYTOKEN, [token], function (err2, rows2, fields2) {
             if (!err2 && rows2.length == 1 && !Time.isTokenOld("" + rows2[0].time)) {
                 var userId = rows2[0].id;
-                connection.query(SQLConsts.GETITEMBYID, [id], function (err, rows, fields) {
-                    console.log(rows[0]);
+                connection.query(SQLConsts.GETITEMBYID, [itemId], function (err, rows, fields) {
                     if (!err && rows.length == 1) {
                         if (userId != rows[0].user) {
                             res.status(403).end();
                         } else {
-                            connection.query(SQLConsts.UPDATEIMAGE, [image, id], function (err1, result) {
+                            fs.unlink(__dirname + "/.." + full);
+                            connection.query(SQLConsts.UPDATEIMAGE, ["", itemId], function (err1, result) {
                                 if (!err1 && result.affectedRows == 1) {
-                                    var item = {
-                                        title: (rows[0].title),
-                                        id: rows[0].id,
-                                        time: rows[0].time,
-                                        price: (rows[0].price),
-                                        image: image,
-                                        user: rows[0].user,
-                                    }
-                                    res.status(200).json(item);
-                                } else
-                                    res.status(403).end();
-                            });
-                        }
-                    } else
-                        res.status(404).end();
-                });
-
-            } else
-                res.status(401).end();
-        });
-            connection.release();
-    });
-
-});*/
-
-//remove item image
-router.delete('/api/item/:id/image', function (req, res) {
-    var token = req.headers.authorization;
-    db.getConnection(function (err3, connection) {
-        connection.query(SQLConsts.GETUSERBYTOKEN, [token], function (err2, rows2, fields2) {
-            if (!err2 && rows2.length == 1 && !time.isTokenOld("" + rows2[0].time)) {
-                var userId = rows2[0].id;
-                connection.query(SQLConsts.GETITEMBYID, [itemId], function (err, rows, fields) {
-                    if (!err && rows.length == 1) {
-                        if (userId != itemId) {
-                            res.status(403).end();
-                        } else {
-                            connection.query(SQLConsts.UPDATEIMAGE, [null, itemId], function (err1, result) {
-                                if (!err1 && result.affectedRows == 1) {
-                                    var item = {
-                                        title: (rows[0].title),
-                                        id: rows[0].id,
-                                        time: rows[0].time,
-                                        price: (rows[0].price),
-                                        image: "",
-                                        user: rows[0].user,
-                                    }
+                                    var item = new Item(rows[0].id, rows[0].time, rows[0].title, rows[0].price, "", rows[0].user);
                                     res.status(200).json(item);
                                 } else
                                     res.status(403).end();
@@ -473,14 +405,12 @@ router.delete('/api/item/:id/image', function (req, res) {
 
 });
 
+
 function errorMessage(field, message) {
     return [{
         'field': field,
         'message': message
     }];
 }
-
-
-
 
 module.exports = router;

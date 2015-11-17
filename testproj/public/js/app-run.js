@@ -37,6 +37,7 @@ angular.module('test').run(function ($rootScope, $location, $cookieStore, $http,
         }
         var oldToken = (!!$rootScope.globals.timeLogin) ? isTokenOld($rootScope.globals.timeLogin) : undefined;
 
+
         if ($rootScope.isLogged && oldToken) {
             console.log('logout');
             AuthenticationService.Unauthorize();
@@ -48,7 +49,6 @@ angular.module('test').run(function ($rootScope, $location, $cookieStore, $http,
         return $rootScope.globals.currentUser;
     }, function () {
         $rootScope.isLogged = !!$rootScope.globals.currentUser;
-        console.log($rootScope.isLogged + "00");
     }, true);
 
     function isTokenOld(tokenTime) {

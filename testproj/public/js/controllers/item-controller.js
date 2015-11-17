@@ -6,11 +6,11 @@ angular.module('test').controller('ItemController', function ($scope, $location,
     $scope.init = function () {
         ApiService.GetItemById($scope.item.id).then(function (response) {
             if (response.status == 200) {
-                $scope.item.title = response.data.title;
-                $scope.item.created_at =  response.data.created_at;
-                $scope.item.price = response.data.price ;
-                $scope.item.image =  response.data.image;
-                $scope.user.id =  response.data.user_id;
+                $scope.item.title = response.data._title;
+                $scope.item.time =  response.data._time;
+                $scope.item.price = response.data._price ;
+                $scope.item.image =  response.data._image;
+                $scope.user.id =  response.data._user;
                 ApiService.GetUserById($scope.user.id).then(function (res) {
                     if (response.status == 200) {
                         $scope.user.name = res.data.name;
